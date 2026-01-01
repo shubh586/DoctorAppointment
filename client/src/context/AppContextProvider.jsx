@@ -10,6 +10,7 @@ import axios from "axios";
 const AppContextProvider = ({ children }) => {
   const [error, setError] = useState(null);
   const [token, setToken] = useState(false);
+  const [isProfileComplete, setIsProfileComplete] = useState(null);
   const [doctors, setDoctors] = useState([]);
   const Months = [
     "Jan",
@@ -51,15 +52,39 @@ const AppContextProvider = ({ children }) => {
         const currentTime = Math.floor(Date.now() / 1000);
         if (decodeToken.exp && decodeToken.exp > currentTime) {
           setToken(true);
+          // Fetch user profile to check completion status
+          axios
+            .get("http://localhost:5000/api/users/getuser", {
+              headers: {
+                Authorization: `Bearer ${savedToken}`,
+              },
+            })
+            .then((response) => {
+              const user = response.data.user;
+              const profileComplete = !!(
+                user.phone &&
+                user.birthdate &&
+                user.address?.line1 &&
+                user.address?.line2
+              );
+              setIsProfileComplete(profileComplete);
+            })
+            .catch((error) => {
+              console.error("Error fetching user profile:", error);
+              setIsProfileComplete(false);
+            });
         } else {
           setToken(false);
+          setIsProfileComplete(false);
         }
       } catch (error) {
         setToken(false);
+        setIsProfileComplete(false);
         console.error("Error decoding token:", error);
       }
     } else {
       setToken(false);
+      setIsProfileComplete(false);
     }
   }, []);
   const bookedAppoinment = [];
@@ -70,6 +95,8 @@ const AppContextProvider = ({ children }) => {
     token,
     setToken,
     error,
+    isProfileComplete,
+    setIsProfileComplete,
   };
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };

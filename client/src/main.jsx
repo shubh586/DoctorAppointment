@@ -12,6 +12,8 @@ import About from "./pages/user/About.jsx";
 import MyProfile from "./pages/user/MyProfile.jsx";
 import Contact from "./pages/user/Contact.jsx";
 import MyAppoinment from "./pages/user/MyAppoinment.jsx";
+import ProfileCompletion from "./pages/user/ProfileCompletion.jsx";
+import UserProtectedRoute from "./pages/user/UserProtectedRoute.jsx";
 import AdminLayout from "./pages/admin/AdminLayout.jsx";
 import Dashboard from "./pages/admin/Dashboard.jsx";
 import AllAppointments from "./pages/admin/AllAppoinments.jsx";
@@ -36,11 +38,33 @@ const router = createBrowserRouter([
       { path: "/doctors/:speciality", element: <Doctors /> },
       { path: "/login", element: <Login /> },
       { path: "/signup", element: <SignUp /> },
+      { path: "/complete-profile", element: <ProfileCompletion /> },
       { path: "/about", element: <About /> },
       { path: "/contact", element: <Contact /> },
-      { path: "/my-profile", element: <MyProfile /> },
-      { path: "/my-appoinments", element: <MyAppoinment /> },
-      { path: "/appoinments/:docId", element: <Appointment /> },
+      {
+        path: "/my-profile",
+        element: (
+          <UserProtectedRoute redirectPath="/login">
+            <MyProfile />
+          </UserProtectedRoute>
+        ),
+      },
+      {
+        path: "/my-appoinments",
+        element: (
+          <UserProtectedRoute redirectPath="/login">
+            <MyAppoinment />
+          </UserProtectedRoute>
+        ),
+      },
+      {
+        path: "/appoinments/:docId",
+        element: (
+          <UserProtectedRoute redirectPath="/login">
+            <Appointment />
+          </UserProtectedRoute>
+        ),
+      },
     ],
   },
   {

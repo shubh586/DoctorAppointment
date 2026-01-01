@@ -21,7 +21,19 @@ const login = async (req, res) => {
     throw new UnauthenticatedError("please provide the valid password");
   }
 
+  // Check if profile is complete
+  const isProfileComplete = !!(
+    user.phone &&
+    user.birthdate &&
+    user.address?.line1 &&
+    user.address?.line2
+  );
+
   const token = user.createJWT();
-  res.status(StatusCodes.OK).json({ user: { name: user.name }, token });
+  res.status(StatusCodes.OK).json({ 
+    user: { name: user.name }, 
+    token,
+    isProfileComplete 
+  });
 };
 export default { login, register };

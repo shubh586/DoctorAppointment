@@ -4,7 +4,7 @@ import axios from "axios";
 import { AppContext } from "../../context/AppContextProvider";
 
 const Login = () => {
-  const { setToken } = useContext(AppContext);
+  const { setToken, setIsProfileComplete } = useContext(AppContext);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
@@ -24,10 +24,19 @@ const Login = () => {
       );
       console.log(response);
       const token = response.data.token;
+      const isProfileComplete = response.data.isProfileComplete;
       localStorage.setItem("userToken", token);
       console.log("user is loged in");
       setToken(true);
-      navigate("/");
+      if (setIsProfileComplete) {
+        setIsProfileComplete(isProfileComplete);
+      }
+      // Redirect based on profile completion status
+      if (isProfileComplete) {
+        navigate("/");
+      } else {
+        navigate("/complete-profile");
+      }
     } catch (error) {
       setError(error.response?.data?.msg || "Login failed. Please try again.");
       console.error("Error login user:", error);

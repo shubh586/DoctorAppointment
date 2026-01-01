@@ -24,7 +24,17 @@ const SignUp = () => {
         }
       );
       console.log("User registered successfully:", response.data);
-      navigate("/login");
+      // After registration, login the user and redirect to profile completion
+      const loginResponse = await axios.post(
+        "http://localhost:5000/api/auth/user/login",
+        {
+          email,
+          password,
+        }
+      );
+      const token = loginResponse.data.token;
+      localStorage.setItem("userToken", token);
+      navigate("/complete-profile");
       scrollTo(0, 0);
     } catch (err) {
       setError(err.response?.data?.msg || "Signup failed. Please try again.");
