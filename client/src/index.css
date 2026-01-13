@@ -1,4 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap");
+
+/* Import Design System */
+@import './styles/designSystem.css';
+@import './styles/animations.css';
 
 @tailwind base;
 @tailwind components;
@@ -7,9 +13,19 @@
 * {
   font-family: Outfit;
 }
+
+/* Force visible text in all inputs */
+input,
+textarea,
+select {
+  color: #111827 !important;
+  /* gray-900 */
+}
+
 .active hr {
   @apply block;
 }
+
 ::-webkit-scrollbar {
   @apply hidden;
 }

@@ -3,9 +3,9 @@ import { specialityData } from "../assets/assets_admin/assets";
 
 const Speciality = () => {
   return (
-    <div className="flex flex-col items-center gap-4 py-16 text-gray-800">
-      <h1 className="font-medium text-3xl">Find by Speciality</h1>
-      <p className="sm:w-1/3 text-center text-sm">
+    <div className="flex flex-col items-center gap-4 py-16 text-gray-800 dark:text-gray-200">
+      <h1 className="font-medium text-3xl text-gray-900 dark:text-white">Find by Speciality</h1>
+      <p className="sm:w-1/3 text-center text-sm text-gray-600 dark:text-gray-300">
         Simply browse through our extensive list of trusted doctors, schedule
         your appointment hassle-free{" "}
       </p>
@@ -13,7 +13,7 @@ const Speciality = () => {
         {specialityData.map((item, index) => (
           <Link
             onClick={() => scrollTo(0, 0)}
-            className="flex flex-col flex-shrink-0 items-center font-semibold text-xs transition-all hover:translate-y-[-10px] duration-500 cursor-pointer"
+            className="flex flex-col flex-shrink-0 items-center font-semibold text-xs text-gray-700 dark:text-gray-300 transition-all hover:translate-y-[-10px] duration-500 cursor-pointer"
             key={index}
             to={`/doctors/${item.speciality}`}
           >

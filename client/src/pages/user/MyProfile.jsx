@@ -38,15 +38,15 @@ const MyProfile = () => {
         phone: response.data.user.phone,
         address: response.data.user.address
           ? {
-              line1:
-                response.data.user.address.line1 || "set the line 1 address",
-              line2:
-                response.data.user.address.line2 || "set the line 2 address",
-            }
+            line1:
+              response.data.user.address.line1 || "set the line 1 address",
+            line2:
+              response.data.user.address.line2 || "set the line 2 address",
+          }
           : {
-              line1: "Unknown Address Line 1",
-              line2: "Unknown Address Line 2",
-            },
+            line1: "Unknown Address Line 1",
+            line2: "Unknown Address Line 2",
+          },
         gender: response.data.user.gender || "Other",
         birthdate: new Date(response.data.user.birthdate).toLocaleDateString(
           "en-GB"
@@ -116,8 +116,8 @@ const MyProfile = () => {
   }
 
   return (
-    <div className="flex flex-col bg-gray-100 px-6 py-8 min-h-screen">
-      <div className="bg-white shadow-md mx-auto p-6 rounded-lg max-w-4xl">
+    <div className="flex flex-col bg-gray-100 dark:bg-gray-900 px-6 py-8 min-h-screen transition-colors">
+      <div className="bg-white dark:bg-gray-800 shadow-md mx-auto p-6 rounded-lg max-w-4xl transition-colors">
         {/* Profile Image */}
         <div className="flex justify-center mb-6">
           <img
@@ -137,7 +137,7 @@ const MyProfile = () => {
               className="border-gray-300 p-2 border rounded-md w-full"
             />
           ) : (
-            <p className="font-semibold text-2xl">{userData.name}</p>
+            <p className="font-semibold text-2xl text-gray-900 dark:text-white">{userData.name}</p>
           )}
         </div>
 
@@ -147,13 +147,13 @@ const MyProfile = () => {
         <div className="gap-6 grid grid-cols-1 md:grid-cols-2">
           {/* Contact Information */}
           <div className="space-y-4">
-            <p className="font-medium text-xl">Contact Information</p>
+            <p className="font-medium text-xl text-gray-900 dark:text-white">Contact Information</p>
             <div>
-              <p className="font-semibold text-sm">Email id</p>
-              <p className="text-blue-600">{userData.email}</p>
+              <p className="font-semibold text-sm text-gray-700 dark:text-gray-300">Email id</p>
+              <p className="text-blue-600 dark:text-blue-400">{userData.email}</p>
             </div>
             <div>
-              <p className="font-semibold text-sm">Phone</p>
+              <p className="font-semibold text-sm text-gray-700 dark:text-gray-300">Phone</p>
               {edited ? (
                 <input
                   type="tel"
@@ -162,28 +162,28 @@ const MyProfile = () => {
                   className="border-gray-300 p-2 border rounded-md w-full"
                 />
               ) : (
-                <p>{userData.phone}</p>
+                <p className="text-gray-900 dark:text-gray-100">{userData.phone}</p>
               )}
             </div>
             <div>
-              <p className="font-semibold text-sm">Address</p>
+              <p className="font-semibold text-sm text-gray-700 dark:text-gray-300">Address</p>
               {edited ? (
                 <div className="space-y-2">
                   <input
                     type="text"
                     defaultValue={userData.address.line1}
                     ref={lineOne}
-                    className="border-gray-300 p-2 border rounded-md w-full"
+                    className="border-gray-300 dark:border-gray-600 p-2 border rounded-md w-full bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   />
                   <input
                     type="text"
                     defaultValue={userData.address.line2}
                     ref={lineTwo}
-                    className="border-gray-300 p-2 border rounded-md w-full"
+                    className="border-gray-300 dark:border-gray-600 p-2 border rounded-md w-full bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   />
                 </div>
               ) : (
-                <p>
+                <p className="text-gray-900 dark:text-gray-100">
                   {userData.address.line1}
                   <br />
                   {userData.address.line2}
@@ -194,9 +194,9 @@ const MyProfile = () => {
 
           {/* Basic Information */}
           <div className="space-y-4">
-            <p className="font-medium text-xl">Basic Information</p>
+            <p className="font-medium text-xl text-gray-900 dark:text-white">Basic Information</p>
             <div>
-              <p className="font-semibold text-sm">Gender</p>
+              <p className="font-semibold text-sm text-gray-700 dark:text-gray-300">Gender</p>
               {edited ? (
                 <select
                   name="Gender"
@@ -208,12 +208,12 @@ const MyProfile = () => {
                   <option value="Female">Female</option>
                 </select>
               ) : (
-                <p>{userData.gender}</p>
+                <p className="text-gray-900 dark:text-gray-100">{userData.gender}</p>
               )}
             </div>
 
             <div>
-              <p className="font-semibold text-sm">Birthday</p>
+              <p className="font-semibold text-sm text-gray-700 dark:text-gray-300">Birthday</p>
               {edited ? (
                 <input
                   type="date"
@@ -222,7 +222,7 @@ const MyProfile = () => {
                   className="border-gray-300 p-2 border rounded-md w-full"
                 />
               ) : (
-                <p>{userData.birthdate}</p>
+                <p className="text-gray-900 dark:text-gray-100">{userData.birthdate}</p>
               )}
             </div>
           </div>

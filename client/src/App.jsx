@@ -6,9 +6,11 @@ import AppContextProvider from "./context/AppContextProvider";
 const App = () => {
   return (
     <AppContextProvider>
-      <div className="mx-4 sm:mx-[10%]">
+      <div className="flex flex-col min-h-screen mx-4 sm:mx-[10%]">
         <NavBar />
-        <Outlet />
+        <main className="flex-grow">
+          <Outlet />
+        </main>
         <Footer />
       </div>
     </AppContextProvider>

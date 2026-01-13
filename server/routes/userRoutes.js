@@ -11,12 +11,14 @@ const {
   getAllAppoinmentsByUser,
   cancelAppointment,
   confirmAppointment,
+  getAppointmentsByDoctor,
 } = user;
 import authenticationMiddleware from "../middleware/authenticationMiddleware.js";
 
 router.get("/docters", getAllDoctors);
 router.get("/doctors/:speciality", getDoctorsBySpeciality);
 router.route("/doctor/:docId").get(getDoctorById);
+router.get("/doctor/:docId/appointments", getAppointmentsByDoctor); // Get booked slots for a doctor
 router.get("/getuser", authenticationMiddleware, getUserById);
 router.post("/bookappointments", authenticationMiddleware, bookAppointment);
 router.patch("/profile", authenticationMiddleware, editProfile);

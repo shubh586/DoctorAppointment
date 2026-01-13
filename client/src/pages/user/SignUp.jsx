@@ -67,7 +67,7 @@ const SignUp = () => {
                 name="name"
                 placeholder="Your Name"
                 required
-                className="block border-gray-300 focus:border-green-500 shadow-sm mt-1 px-3 py-2 border rounded-md w-full focus:outline-none focus:ring-green-500 sm:text-sm"
+                className="block border-gray-300 focus:border-green-500 shadow-sm mt-1 px-3 py-2 border rounded-md w-full text-gray-900 focus:outline-none focus:ring-green-500 sm:text-sm"
               />
             </div>
 
@@ -84,7 +84,7 @@ const SignUp = () => {
                 name="email"
                 placeholder="name@example.com"
                 required
-                className="block border-gray-300 focus:border-green-500 shadow-sm mt-1 px-3 py-2 border rounded-md w-full focus:outline-none focus:ring-green-500 sm:text-sm"
+                className="block border-gray-300 focus:border-green-500 shadow-sm mt-1 px-3 py-2 border rounded-md w-full text-gray-900 focus:outline-none focus:ring-green-500 sm:text-sm"
               />
             </div>
 
@@ -101,7 +101,7 @@ const SignUp = () => {
                 name="password"
                 placeholder="Password"
                 required
-                className="block border-gray-300 focus:border-green-500 shadow-sm mt-1 px-3 py-2 border rounded-md w-full focus:outline-none focus:ring-green-500 sm:text-sm"
+                className="block border-gray-300 focus:border-green-500 shadow-sm mt-1 px-3 py-2 border rounded-md w-full text-gray-900 focus:outline-none focus:ring-green-500 sm:text-sm"
               />
             </div>
 

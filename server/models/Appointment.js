@@ -45,4 +45,13 @@ const AppointmentSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+// Prevent duplicate bookings: one doctor can only have one active appointment per slot
+AppointmentSchema.index(
+  { doctor: 1, slotTime: 1 },
+  {
+    unique: true,
+    partialFilterExpression: { status: { $in: ["Pending", "Confirmed", "Completed"] } }
+  }
+);
+
 export default mongoose.model("Appointment", AppointmentSchema);

@@ -13,17 +13,39 @@ const Appointment = () => {
   const [slotTimes, setSlotTimes] = useState("");
   const daysOfWeek = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
   const [error, setError] = useState(null);
+  const [bookedSlots, setBookedSlots] = useState([]); // Store already booked slots
   useEffect(() => {
     const foundDoctor = doctors.find((doctor) => doctor._id === docId);
     setDoctor(foundDoctor || {});
   }, [docId, doctors]);
+
+  // Fetch booked slots for this doctor
   useEffect(() => {
-    if (getDoctor?._id) {
-      getAvailableSlots();
-    }
+    const fetchBookedSlots = async () => {
+      if (getDoctor?._id) {
+        try {
+          const response = await axios.get(
+            `http://localhost:5000/api/users/doctor/${getDoctor._id}/appointments`
+          );
+          // Extract booked slot times
+          const booked = response.data.appointments.map(apt => apt.slotTime);
+          setBookedSlots(booked);
+        } catch (error) {
+          console.error("Error fetching booked slots:", error);
+        }
+      }
+    };
+    fetchBookedSlots();
   }, [getDoctor]);
 
+  useEffect(() => {
+    if (getDoctor?._id && bookedSlots.length >= 0) {
+      getAvailableSlots();
+    }
+  }, [getDoctor, bookedSlots]); // Re-run when booked slots change
+
   const getAvailableSlots = () => {
+    console.log(`📅 Generating slots... Booked count: ${bookedSlots.length}`, bookedSlots);
     setDocSlot([]);
     const today = new Date();
     for (let i = 0; i < 7; i++) {
@@ -57,9 +79,28 @@ const Appointment = () => {
           hour: "2-digit",
           minute: "2-digit",
         });
+
+        // Check if this slot is already booked
+        const isBooked = bookedSlots.some(bookedTime => {
+          const bookedDate = new Date(bookedTime);
+          const match = bookedDate.getTime() === currentdate.getTime();
+          if (match) {
+            console.log(`✅ MATCHED BOOKED SLOT: ${formatedTime}`, {
+              bookedDate: bookedDate.toISOString(),
+              currentdate: currentdate.toISOString(),
+            });
+          }
+          return match;
+        });
+
+        if (isBooked) {
+          console.log(`🔴 Slot ${formatedTime} is BOOKED`);
+        }
+
         timeSlots.push({
           datetime: new Date(currentdate),
           Time: formatedTime,
+          isBooked: isBooked, // Add booked status
         });
         currentdate.setMinutes(currentdate.getMinutes() + 30);
       }
@@ -134,7 +175,7 @@ const Appointment = () => {
               {getDoctor.experience} years
             </p>
           </div>
-          <p className="flex items-center gap-1 text-base">
+          <p className="flex items-center gap-1 text-base text-gray-900 dark:text-white">
             About
             <img
               src={assets.info_icon}
@@ -147,26 +188,25 @@ const Appointment = () => {
               {getDoctor.about}
             </p>
           </div>
-          <p className="text-gray-800">
+          <p className="text-gray-800 dark:text-gray-200 font-medium">
             Appointment fee:{" "}
-            <span className="font-medium">$ {getDoctor.fees}</span>
+            <span className="font-semibold text-primary dark:text-blue-400">₹ {getDoctor.fees}</span>
           </p>
         </div>
       </div>
 
       {/* Booking slots */}
-      <div className="mt-4 sm:ml-72 sm:pl-4 font-medium text-gray-700">
-        <p>Booking slots</p>
+      <div className="mt-4 sm:ml-72 sm:pl-4 font-medium text-gray-700 dark:text-gray-300">
+        <p className="text-lg mb-3">Booking slots</p>
         <div className="flex items-center gap-3 overflow-x-auto">
           {docSlots.length &&
             docSlots.map((item, index) => (
               <div
                 key={index}
-                className={`py-6 min-w-16 rounded-full cursor-pointer text-center ${
-                  getSlotIndex === index
-                    ? "bg-primary text-white"
-                    : "border border-gray-600"
-                }`}
+                className={`py-6 min-w-16 rounded-full cursor-pointer text-center ${getSlotIndex === index
+                  ? "bg-primary text-white"
+                  : "border border-gray-600"
+                  }`}
                 onClick={() => setSlotIndex(index)}
               >
                 <p>{item[0] && daysOfWeek[item[0].datetime.getDay()]}</p>
@@ -178,15 +218,17 @@ const Appointment = () => {
           {docSlots.length &&
             docSlots[getSlotIndex].map((item, index) => (
               <div
-                onClick={() => setSlotTimes(item.Time)}
-                className={`flex-shrink-0 px-5 py-2 rounded-full font-light text-sm cursor-pointer ${
-                  item.Time === slotTimes
-                    ? "bg-primary text-white"
-                    : "border border-gray-400 bg-white"
-                }`}
+                onClick={() => !item.isBooked && setSlotTimes(item.Time)}
+                className={`flex-shrink-0 px-5 py-2 rounded-full font-light text-sm ${item.isBooked
+                  ? "bg-gray-300 dark:bg-gray-700 text-gray-500 dark:text-gray-500 cursor-not-allowed line-through"
+                  : item.Time === slotTimes
+                    ? "bg-primary text-white cursor-pointer"
+                    : "border border-gray-400 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-200 cursor-pointer hover:border-primary dark:hover:border-primary"
+                  }`}
                 key={index}
+                title={item.isBooked ? "Already booked" : "Click to select"}
               >
-                <p className="">{item.Time}</p>
+                <p className="">{item.Time}{item.isBooked ? " (Booked)" : ""}</p>
               </div>
             ))}
         </div>

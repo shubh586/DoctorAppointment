@@ -105,10 +105,7 @@ Create a `.env` file in the `server/` directory:
 
 ```env
 # MongoDB Connection String
-MONGO_URI=mongodb://localhost:27017/doctorappointment
-# Or for MongoDB Atlas:
-# MONGO_URI=mongodb+srv://username:password@cluster.mongodb.net/doctorappointment
-
+MONGO_URI=
 # JWT Configuration
 JWT_SECRET=your_super_secret_jwt_key_change_this_in_production
 JWT_LIFETIME=30d
@@ -367,19 +364,7 @@ npm install
 - Image uploads are handled via Multer and stored in `server/public/`
 - All API responses follow a consistent format: `{ success: boolean, data: ... }`
 
-## 🤝 Contributing
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
-
-## 📄 License
-
-MIT License
-
-## 👨‍💻 Author
 
 Doctor Appointment Booking System
 

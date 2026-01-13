@@ -66,12 +66,12 @@ const Docterprofile = () => {
   };
 
   if (!profileData) {
-    return <p>Loading doctor profile...</p>;
+    return <p className="text-gray-900 dark:text-white">Loading doctor profile...</p>;
   }
 
   return (
-    <div className="flex flex-col bg-gray-100 px-6 py-8 min-h-screen">
-      <div className="bg-white shadow-md mx-auto p-6 rounded-lg max-w-4xl">
+    <div className="flex flex-col bg-gray-100 dark:bg-gray-900 px-6 py-8 min-h-screen transition-colors">
+      <div className="bg-white dark:bg-gray-800 shadow-md mx-auto p-6 rounded-lg max-w-4xl transition-colors">
         <div className="flex justify-center mb-6">
           <img
             src={`http://localhost:5000${profileData.image}`}
@@ -81,71 +81,71 @@ const Docterprofile = () => {
         </div>
 
         <div className="mb-6">
-          <p className="font-semibold text-2xl">{profileData.name}</p>
+          <p className="font-semibold text-2xl text-gray-900 dark:text-white">{profileData.name}</p>
         </div>
 
-        <hr className="mb-6" />
+        <hr className="mb-6 border-gray-300 dark:border-gray-600" />
 
         <div className="gap-6 grid grid-cols-1 md:grid-cols-2">
           <div className="space-y-4">
-            <p className="font-medium text-xl">Doctor Information</p>
+            <p className="font-medium text-xl text-gray-900 dark:text-white">Doctor Information</p>
             <div>
-              <p className="font-semibold text-sm">Degree</p>
-              <p>{profileData.degree}</p>
+              <p className="font-semibold text-sm text-gray-700 dark:text-gray-300">Degree</p>
+              <p className="text-gray-900 dark:text-gray-100">{profileData.degree}</p>
             </div>
             <div>
-              <p className="font-semibold text-sm">Speciality</p>
-              <p>{profileData.speciality}</p>
+              <p className="font-semibold text-sm text-gray-700 dark:text-gray-300">Speciality</p>
+              <p className="text-gray-900 dark:text-gray-100">{profileData.speciality}</p>
             </div>
             <div>
-              <p className="font-semibold text-sm">Experience</p>
-              <p>{profileData.experience} years</p>
+              <p className="font-semibold text-sm text-gray-700 dark:text-gray-300">Experience</p>
+              <p className="text-gray-900 dark:text-gray-100">{profileData.experience} years</p>
             </div>
             <div>
-              <p className="font-semibold text-sm">About</p>
+              <p className="font-semibold text-sm text-gray-700 dark:text-gray-300">About</p>
               {isEditing ? (
                 <textarea
                   ref={aboutRef}
                   defaultValue={profileData.about}
-                  className="border-gray-300 p-2 border rounded-md w-full"
+                  className="border-gray-300 dark:border-gray-600 p-2 border rounded-md w-full bg-white dark:bg-gray-700"
                 />
               ) : (
-                <p>{profileData.about}</p>
+                <p className="text-gray-900 dark:text-gray-100">{profileData.about}</p>
               )}
             </div>
           </div>
           <div className="space-y-4">
-            <p className="font-medium text-xl">Additional Details</p>
+            <p className="font-medium text-xl text-gray-900 dark:text-white">Additional Details</p>
             <div>
-              <p className="font-semibold text-sm">Appointment Fee</p>
+              <p className="font-semibold text-sm text-gray-700 dark:text-gray-300">Appointment Fee</p>
               {isEditing ? (
                 <input
                   ref={feeRef}
                   type="number"
                   defaultValue={profileData.fees}
-                  className="border-gray-300 p-2 border rounded-md w-full"
+                  className="border-gray-300 dark:border-gray-600 p-2 border rounded-md w-full bg-white dark:bg-gray-700"
                 />
               ) : (
-                <p>₹{profileData.fees}</p>
+                <p className="text-gray-900 dark:text-gray-100">₹{profileData.fees}</p>
               )}
             </div>
             <div>
-              <p className="font-semibold text-sm">Address</p>
+              <p className="font-semibold text-sm text-gray-700 dark:text-gray-300">Address</p>
               {isEditing ? (
                 <div className="space-y-2">
                   <input
                     ref={lineOne}
                     defaultValue={profileData.address.line1}
-                    className="border-gray-300 p-2 border rounded-md w-full"
+                    className="border-gray-300 dark:border-gray-600 p-2 border rounded-md w-full bg-white dark:bg-gray-700"
                   />
                   <input
                     ref={lineTwo}
                     defaultValue={profileData.address.line2}
-                    className="border-gray-300 p-2 border rounded-md w-full"
+                    className="border-gray-300 dark:border-gray-600 p-2 border rounded-md w-full bg-white dark:bg-gray-700"
                   />
                 </div>
               ) : (
-                <p>
+                <p className="text-gray-900 dark:text-gray-100">
                   {profileData.address.line1}
                   <br />
                   {profileData.address.line2}
@@ -153,7 +153,7 @@ const Docterprofile = () => {
               )}
             </div>
             <div>
-              <p className="font-semibold text-sm">Availability</p>
+              <p className="font-semibold text-sm text-gray-700 dark:text-gray-300">Availability</p>
               {isEditing ? (
                 <input
                   ref={availabilityRef}
@@ -162,7 +162,7 @@ const Docterprofile = () => {
                   className="ml-2"
                 />
               ) : (
-                <p>
+                <p className="text-gray-900 dark:text-gray-100">
                   {profileData.availability === "Available"
                     ? "Available"
                     : "Unavailable"}
@@ -176,14 +176,14 @@ const Docterprofile = () => {
           {isEditing ? (
             <button
               onClick={handleSave}
-              className="bg-green-500 hover:bg-green-600 px-4 py-2 rounded-md text-white transition"
+              className="bg-green-500 dark:bg-green-600 hover:bg-green-600 dark:hover:bg-green-700 px-4 py-2 rounded-md text-white transition-colors"
             >
               Save
             </button>
           ) : (
             <button
               onClick={() => setIsEditing(true)}
-              className="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-md text-white transition"
+              className="bg-blue-500 dark:bg-blue-600 hover:bg-blue-600 dark:hover:bg-blue-700 px-4 py-2 rounded-md text-white transition-colors"
             >
               Edit
             </button>

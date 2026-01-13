@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { assets } from "../assets/assets_admin/assets";
 import { NavLink, useNavigate } from "react-router-dom";
 import { AppContext } from "../context/AppContextProvider";
+import ThemeToggle from "./ThemeToggle";
 const NavBar = () => {
   const navigate = useNavigate();
   const [showMenu, setShowMenu] = useState(false);
@@ -30,6 +31,9 @@ const NavBar = () => {
         </NavLink>
       </ul>
       <div className="flex items-center gap-4 cursor-pointer">
+        {/* Theme Toggle */}
+        <ThemeToggle />
+
         {token ? (
           <div className="relative flex items-center gap-4 group">
             <img className="rounded w-8 full" src={assets.profile_pic} alt="" />
@@ -86,9 +90,8 @@ const NavBar = () => {
             }}
           />
           <div
-            className={`md:hidden right-0 top-0 bottom-0 z-20 overflow-hidden bg-white  transition-all ${
-              showMenu ? "fixed w-full" : "h-0 w-0"
-            }`}
+            className={`md:hidden right-0 top-0 bottom-0 z-20 overflow-hidden bg-white  transition-all ${showMenu ? "fixed w-full" : "h-0 w-0"
+              }`}
           >
             <div className="flex justify-between items-center px-5 py-6">
               <img className="w-36" src={assets.logo} alt="" />

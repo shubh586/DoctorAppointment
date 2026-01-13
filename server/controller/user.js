@@ -41,33 +41,44 @@ const getDoctorById = async (req, res) => {
 const bookAppointment = async (req, res) => {
   const { docId, slotTime } = req.body;
   const userId = req.user.userId;
+
   const doctor = await Doctor.findById(docId);
   if (!doctor) {
     throw new BadRequestError(`No doctor found with id ${docId}`);
   }
+
   const user = await User.findById(userId);
   if (!user) {
     throw new NotFoundError(`No user found with ID: ${userId}`);
   }
-  const alreadykAppointment = await Appointment.findOne({
+
+  // Convert slotTime to Date object for comparison
+  const requestedSlot = new Date(slotTime);
+
+  // Check if slot is already booked (excluding cancelled appointments)
+  const alreadyBooked = await Appointment.findOne({
     doctor: docId,
-    slotTime,
-    status: { $ne: "Cancelled" },
+    slotTime: requestedSlot,
+    status: { $in: ["Pending", "Confirmed", "Completed"] }, // All active statuses
   });
 
-  if (alreadykAppointment) {
-    throw new BadRequestError("The selected time slot is already booked");
+  if (alreadyBooked) {
+    throw new BadRequestError(
+      `This time slot is already booked. Please select another time.`
+    );
   }
+
   const appointment = await Appointment.create({
     doctor: docId,
     user: userId,
-    slotTime: slotTime,
+    slotTime: requestedSlot,
     fees: doctor.fees,
     userName: user.name,
     doctorName: doctor.name,
     userBithdate: user.birthdate,
     speciality: doctor.speciality,
   });
+
   res.status(StatusCodes.CREATED).json({ success: true, appointment });
 };
 //edit
@@ -157,6 +168,22 @@ const getUserById = async (req, res) => {
   res.status(StatusCodes.OK).json({ success: true, user });
 };
 
+// Get all appointments for a specific doctor (to check booked slots)
+const getAppointmentsByDoctor = async (req, res) => {
+  const { docId } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(docId)) {
+    throw new BadRequestError("Invalid doctor ID");
+  }
+
+  const appointments = await Appointment.find({
+    doctor: docId,
+    status: { $ne: "Cancelled" }, // Exclude cancelled appointments
+  }).select('slotTime status');
+
+  res.status(StatusCodes.OK).json({ success: true, appointments });
+};
+
 export default {
   getAllDoctors,
   getUserById,
@@ -167,4 +194,5 @@ export default {
   getAllAppoinmentsByUser,
   cancelAppointment,
   confirmAppointment,
+  getAppointmentsByDoctor,
 };

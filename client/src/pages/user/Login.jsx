@@ -70,7 +70,7 @@ const Login = () => {
                 name="email"
                 placeholder="name@example.com"
                 required
-                className="block border-gray-300 focus:border-green-500 shadow-sm mt-1 px-3 py-2 border rounded-md focus:ring-green-500 w-full sm:text-sm focus:outline-none"
+                className="block border-gray-300 focus:border-green-500 shadow-sm mt-1 px-3 py-2 border rounded-md focus:ring-green-500 w-full text-gray-900 sm:text-sm focus:outline-none"
               />
             </div>
 
@@ -87,7 +87,7 @@ const Login = () => {
                 name="password"
                 placeholder="Password"
                 required
-                className="block border-gray-300 focus:border-green-500 shadow-sm mt-1 px-3 py-2 border rounded-md focus:ring-green-500 w-full sm:text-sm focus:outline-none"
+                className="block border-gray-300 focus:border-green-500 shadow-sm mt-1 px-3 py-2 border rounded-md focus:ring-green-500 w-full text-gray-900 sm:text-sm focus:outline-none"
               />
             </div>
 
