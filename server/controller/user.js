@@ -54,6 +54,7 @@ const bookAppointment = async (req, res) => {
 
   // Convert slotTime to Date object for comparison
   const requestedSlot = new Date(slotTime);
+  requestedSlot.setSeconds(0, 0);
 
   // Check if slot is already booked (excluding cancelled appointments)
   const alreadyBooked = await Appointment.findOne({
@@ -68,6 +69,10 @@ const bookAppointment = async (req, res) => {
     );
   }
 
+  // Set expiration time to 1 minute from now (for testing)
+  const expirationTime = new Date();
+  expirationTime.setMinutes(expirationTime.getMinutes() + 1);
+
   const appointment = await Appointment.create({
     doctor: docId,
     user: userId,
@@ -77,9 +82,15 @@ const bookAppointment = async (req, res) => {
     doctorName: doctor.name,
     userBithdate: user.birthdate,
     speciality: doctor.speciality,
+    paymentStatus: "pending",
+    expiresAt: expirationTime,
   });
 
-  res.status(StatusCodes.CREATED).json({ success: true, appointment });
+  res.status(StatusCodes.CREATED).json({
+    success: true,
+    appointment,
+    message: "Appointment booked. Please complete payment within 1 minute.",
+  });
 };
 //edit
 const editProfile = async (req, res) => {

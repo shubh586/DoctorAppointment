@@ -41,16 +41,32 @@ const AppointmentSchema = new mongoose.Schema(
     speciality: {
       type: String,
     },
+    paymentId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Payment",
+    },
+    paymentStatus: {
+      type: String,
+      enum: ["pending", "paid", "failed", "expired"],
+      default: "pending",
+    },
+    expiresAt: {
+      type: Date,
+    },
   },
   { timestamps: true }
 );
 
 // Prevent duplicate bookings: one doctor can only have one active appointment per slot
+// Exclude cancelled and expired appointments from blocking slots
 AppointmentSchema.index(
   { doctor: 1, slotTime: 1 },
   {
     unique: true,
-    partialFilterExpression: { status: { $in: ["Pending", "Confirmed", "Completed"] } }
+    partialFilterExpression: {
+      status: { $in: ["Pending", "Confirmed", "Completed"] },
+      paymentStatus: { $ne: "expired" }
+    }
   }
 );
 

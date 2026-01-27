@@ -3,7 +3,7 @@ import admin from "../controller/admin.js";
 import multer from "multer";
 import path from "path";
 import authenticationMiddleware from "../middleware/authenticationMiddleware.js";
-const { getAllAppoinments, getAllDoctors, addDoctor } = admin;
+const { getAllAppoinments, getAllDoctors, addDoctor, getAllPatients } = admin;
 import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -22,6 +22,7 @@ const upload = multer({ storage });
 const router = express.Router();
 router.get("/all-doctors", authenticationMiddleware, getAllDoctors);
 router.get("/all-appointments", authenticationMiddleware, getAllAppoinments);
+router.get("/all-patients", authenticationMiddleware, getAllPatients);
 router.post(
   "/add-doctor",
   authenticationMiddleware,

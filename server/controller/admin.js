@@ -38,4 +38,15 @@ const addDoctor = async (req, res) => {
     throw new UnauthenticatedError("Admin only allowed");
   }
 };
-export default { getAllAppoinments, getAllDoctors, addDoctor };
+
+const getAllPatients = async (req, res) => {
+  if (req.user && req.user.role === "Admin") {
+    const User = (await import("../models/User.js")).default;
+    const patientsCount = await User.countDocuments({ role: "User" });
+    res.status(StatusCodes.OK).json({ success: true, count: patientsCount });
+  } else {
+    throw new UnauthenticatedError("Admin only allowed");
+  }
+};
+
+export default { getAllAppoinments, getAllDoctors, addDoctor, getAllPatients };

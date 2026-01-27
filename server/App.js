@@ -10,6 +10,8 @@ import doctorRoutes from "./routes/doctorRoutes.js";
 import userAuthRoutes from "./routes/userAuthRoutes.js";
 import adminAuthRoutes from "./routes/adminAuthRoutes.js";
 import doctorAuthRoutes from "./routes/doctorAuthRoutes.js";
+import paymentRoutes from "./routes/paymentRoutes.js";
+import startCleanupJob from "./jobs/cleanupExpiredAppointments.js";
 import notFoundMiddleware from "./middleware/notFoundMiddleware.js";
 import errorHandlerMiddleware from "./middleware/errorHandlerMiddleware.js";
 import { fileURLToPath } from "url";
@@ -37,12 +39,17 @@ app.use("/api/doctors", doctorRoutes);
 app.use("/api/auth/user", userAuthRoutes);
 app.use("/api/auth/admin", adminAuthRoutes);
 app.use("/api/auth/doctor", doctorAuthRoutes);
+app.use("/api/payment", paymentRoutes);
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
 const port = process.env.PORT || 3000;
 const start = async () => {
   try {
     await connectDB(process.env.MONGO_URI);
+
+    // Start cleanup job for expired appointments
+    startCleanupJob();
+
     app.listen(port, () => {
       console.log(`server is connected on the ${port}`);
     });
